@@ -53,7 +53,7 @@ node('openstack-agenk-sm') {
     '''
     // Write the configuration into a file
     writeFile file: '/home/ubuntu/tempest/etc/tempest.conf', text: "${config}"
-    echo 'Using the following Tempest configuration: ${config}'
+    echo "Using the following Tempest configuration: ${config}"
 
 }
 
