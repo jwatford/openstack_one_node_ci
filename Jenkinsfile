@@ -34,6 +34,10 @@ node('openstack-agent-xl') {
     git clone https://github.com/openstack/tempest.git /home/ubuntu/tempest
     cd /home/ubuntu/tempest/
     sudo pip install -r requirements.txt
+    '''
+
+    // Get a config file template with the basic static values of an OSA deployment
+    sh '''
     cd /home/ubuntu/tempest/etc/
     wget https://raw.githubusercontent.com/CasJ/openstack_one_node_ci/master/tempest.conf
     '''    
@@ -55,10 +59,14 @@ node('openstack-agent-xl') {
     done
     '''
 
-    //Run the tests
+    // Run the tests and store the results in ~/subunit/before
     sh '''
+    mkdir /home/ubuntu/subunit
     cd /home/ubuntu/tempest/
-    ostestr --regex smoke
+    testr init
+    stream_id=`cat .testrepository/next-stream`
+    ostestr --no-slowest --regex smoke
+    cp .testrepository/$stream_id /home/ubuntu/subunit/before
     '''
     
 }
