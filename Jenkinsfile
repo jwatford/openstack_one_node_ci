@@ -1,7 +1,7 @@
 stage 'Deployment'
 
 echo 'Deploying OpenStack using OSA for single node'
-node('openstack-agent-xl') {
+node('agent-xl') {
     
     // Wait for cloud-init to finish
     wait_for_cloud_init()
@@ -27,7 +27,7 @@ stage 'Post-Deployment Validation'
 def config
 
 echo 'Running tests to validate the OpenStack deployment'
-node('openstack-agent-xl') {
+node('agent-xl') {
    
     // Install latest version of Tempest in the host
     sh '''
