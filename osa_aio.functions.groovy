@@ -3,14 +3,14 @@
 def deploy_openstack_aio(release = 'master') {
 
     echo 'Deploying OpenStack All In One'
-    git branch: "${release}", url: 'https://github.com/openstack/openstack-ansible'
+    git branch: release, url: 'https://github.com/openstack/openstack-ansible'
     sh """
     export apply_security_hardening=false
-    scripts/bootstrap-ansible.sh
-    scripts/bootstrap-aio.sh
-    scripts/run-playbooks.sh
+    sudo scripts/bootstrap-ansible.sh
+    sudo scripts/bootstrap-aio.sh
+    sudo scripts/run-playbooks.sh
     cd playbooks/
-    openstack-ansible os-tempest-install.yml
+    sudo openstack-ansible os-tempest-install.yml
     """
 
 }
