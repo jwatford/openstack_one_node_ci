@@ -68,5 +68,13 @@ def run_tempest_smoke_tests(results_file = 'results') {
 
 }
 
+def rolling_upgrade(to_release = 'master') {
+
+    git 'https://github.com/osic/qa-jenkins-onmetal.git'
+    ansiblePlaybook extras: "-e openstack_release=${to_release} -e main_path=${main_path}", inventory: 'localhost,', playbook: 'run_pre_upgrade.yaml', sudoUser: null
+
+}
+
+
 // The external code must return it's contents as an object
 return this;

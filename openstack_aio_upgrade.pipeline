@@ -2,9 +2,10 @@
 
 def osa, common
 
-// Jenkins must provide this variable as parameter or the build 
+// Jenkins must provide these variables as parameters or the build 
 // will fail:
-//  - release
+//  - from_release
+//  - to_release
 
 
 // *******************************
@@ -29,7 +30,7 @@ node('agent-xl') {
     common.wait_for_agent_setup()
 
     // Deploy OpenStack
-    osa.deploy_openstack_aio(release)
+    osa.deploy_openstack_aio(from_release)
 
 }
 
@@ -49,4 +50,15 @@ node('agent-xl') {
     
 }
 
+// *******************************
+stage 'Rolling Upgrade'
+// *******************************
+
+echo "Upgrading OpenStack from ${from_release} to ${to_release}"
+node('agent-xl') {
+
+    // Install latest version of Tempest in the host
+    osa.rolling_upgrade(to_release)
+
+}
 
