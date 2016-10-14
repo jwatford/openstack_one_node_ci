@@ -1,6 +1,27 @@
+#!/usr/bin/env groovy
+
+def osa, common
+
+// Jenkins must provide this variable as parameter or the build 
+// will fail:
+//  - release
+
+// *******************************
 stage 'Deployment'
+// *******************************
 
 echo 'Deploying OpenStack using OSA for single node'
+node('master') {
+    
+    // Load the external functions using master since the git command
+    // might not be available at the agent yet
+    fileLoader.withGit('https://github.com/CasJ/openstack_one_node_ci.git', 'master', null, '') {
+        common = fileLoader.load('common.groovy');
+        osa = fileLoader.load('osa_aio.functions.groovy');
+    }
+    
+}
+
 node('agent-xl') {
     
     // Wait for cloud-init to finish
