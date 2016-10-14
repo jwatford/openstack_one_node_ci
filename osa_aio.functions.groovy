@@ -68,3 +68,5 @@ def run_tempest_smoke_tests(results_file = 'results') {
 
 }
 
+// The external code must return it's contents as an object
+return this;
