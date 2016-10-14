@@ -4,14 +4,14 @@ def deploy_openstack_aio(release = 'master') {
 
     echo 'Deploying OpenStack All In One'
     git branch: release, url: 'https://github.com/openstack/openstack-ansible'
-    sh """
+    sh '''
     export apply_security_hardening=false
     sudo scripts/bootstrap-ansible.sh
     sudo scripts/bootstrap-aio.sh
     sudo scripts/run-playbooks.sh
     cd playbooks/
     sudo openstack-ansible os-tempest-install.yml
-    """
+    '''
 
 }
 
@@ -63,7 +63,7 @@ def run_tempest_smoke_tests(results_file = 'results') {
     cd /home/ubuntu/tempest/
     stream_id=`cat .testrepository/next-stream`
     ostestr --no-slowest --regex smoke
-    cp .testrepository/$stream_id /home/ubuntu/subunit/${results_file}
+    cp .testrepository/\$stream_id /home/ubuntu/subunit/${results_file}
     """
 
 }
