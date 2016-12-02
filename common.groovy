@@ -61,7 +61,7 @@ def get_server_public_key() {
 def add_key_to_server(server_ip, public_key) {
 
     sh """
-    ssh -o StrictHostKeyChecking=no root@${server_ip} '''
+    ssh -o StrictHostKeyChecking=no ubuntu@${server_ip} '''
         echo "${public_key}" >> \$HOME/.ssh/authorized_keys
     '''
     """
