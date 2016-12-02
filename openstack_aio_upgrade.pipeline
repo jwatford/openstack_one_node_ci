@@ -42,7 +42,7 @@ node('agent-xl') {
     host_ip = common.get_server_ip()
 
     // Add the elasticsearch public key to the deployed onmetal host
-    common.add_key_to_server(host_ip, elasticsearch_pkey)
+    common.add_key_to_server(elasticsearch_pkey)
 
     // Deploy OpenStack
     osa.deploy_openstack_aio(from_release)
