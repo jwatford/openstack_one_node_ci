@@ -35,5 +35,39 @@ def wait_for_ping(host_ip, timeout_sec) {
 }
 
 
+def get_server_ip() {
+
+    String server_ip
+
+    // Get the IP of the current worker server
+    server_ip = sh returnStdout: true, script: 'ip addr show eth0 | grep "inet\\b" | awk \'{print $2}\' | cut -d/ -f1'
+    echo "The IP address of the server is: ${server_ip}"
+    return (server_ip)
+
+}
+
+
+def get_server_public_key() {
+
+    String pkey
+
+    // Get the public key from the current worker server
+    pkey = sh returnStdout: true, script: 'cat $HOME/.ssh/id_rsa.pub'
+    return (pkey)
+
+}
+
+
+def add_key_to_server(server_ip, public_key) {
+
+    sh """
+    ssh -o StrictHostKeyChecking=no root@${server_ip} '''
+        echo "${public_key}" >> \$HOME/.ssh/authorized_keys
+    '''
+    """
+
+}
+
+
 // The external code must return it's contents as an object
 return this;

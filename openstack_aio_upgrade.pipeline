@@ -1,6 +1,7 @@
 #!/usr/bin/env groovy
 
 def osa, common
+String host_ip, elasticsearch_ip, elasticsearch_pkey
 
 // Jenkins must provide these variables as parameters or the build 
 // will fail:
@@ -12,7 +13,7 @@ def osa, common
 stage 'Deployment'
 // *******************************
 
-echo 'Deploying OpenStack using OSA for single node'
+echo 'Deploying an All In One OpenStack using OSA'
 node('master') {
     
     // Load the external functions using master since the git command
@@ -24,10 +25,24 @@ node('master') {
     
 }
 
+node('elasticsearch') {
+
+    // Get the server information
+    elasticsearch_ip = common.get_server_ip()
+    elasticsearch_pkey = common.get_server_public_key()
+
+}
+
 node('agent-xl') {
     
     // Wait for cloud-init to finish
     common.wait_for_agent_setup()
+
+    // Get the agent IP
+    host_ip = common.get_server_ip()
+
+    // Add the elasticsearch public key to the deployed onmetal host
+    common.add_key_to_server(host_ip, elasticsearch_pkey)
 
     // Deploy OpenStack
     osa.deploy_openstack_aio(from_release)
@@ -46,7 +61,12 @@ node('agent-xl') {
     osa.install_tempest()
 
     // Run the smoke tests
-    osa.run_tempest_smoke_tests('smoke_results')
+    osa.run_tempest_smoke_tests('before_upgrade')
+
+    // Install and run the persistent resources creation
+    osa.install_persistent_resources_tests()
+    osa.run_persistent_resources_tests('create')
+    osa.run_persistent_resources_tests('verify', 'before_upgrade')
     
 }
 
@@ -62,3 +82,41 @@ node('agent-xl') {
 
 }
 
+// *******************************
+stage 'Post-Upgrade Validation'
+// *******************************
+
+echo 'Validating the OpenStack deployment after the upgrade'
+node('agent-xl') {
+ 
+    // Run the tempest tests
+    osa.run_tempest_smoke_tests('after_upgrade')
+
+    // Run the persistent resources validation then clean them up
+    osa.run_persistent_resources_tests('verify', 'after_upgrade')
+    osa.run_persistent_resources_tests('cleanup')    
+
+}
+
+// *******************************
+stage 'Reporting'
+// *******************************
+
+echo 'Parsing the test results and submitting them to ElasticSearch'
+node('agent-xl'){
+    
+    // Pase persistent resource results
+    osa.setup_parse_persistent_resources()
+    osa.parse_persistent_resources_tests()
+
+}
+
+node('elasticsearch'){
+    
+    //Pull data from the system and places it on ES vm
+    osa.aggregate_results(host_ip)
+
+    //Push data to ES
+    osa.parse_results()
+    
+}
