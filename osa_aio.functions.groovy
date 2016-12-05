@@ -59,7 +59,8 @@ def install_tempest() {
 
 def run_tempest_smoke_tests(results_file = 'results') {
 
-    def tempest_output
+    String newline = "\n"
+    def tempest_output, failures
 
     tempest_output = sh returnStdout: true, script: """
     cd \$HOME/tempest/
