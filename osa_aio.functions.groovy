@@ -83,7 +83,7 @@ def install_persistent_resources_tests() {
     echo 'Installing Persistent Resources Tempest Plugin'
     sh '''
     git clone https://github.com/osic/persistent-resources-tests.git $HOME/persistent-resources-tests
-    pip install $HOME/persistent-resources-tests/
+    sudo pip install $HOME/persistent-resources-tests/
     '''
 
 }
@@ -110,7 +110,7 @@ def setup_parse_persistent_resources(){
     
     sh '''
     git clone https://github.com/osic/persistent-resources-tests-parse.git $HOME/persistent-resources-tests-parse
-    pip install $HOME/persistent-resources-tests-parse/
+    sudo pip install $HOME/persistent-resources-tests-parse/
     '''
 
 }
