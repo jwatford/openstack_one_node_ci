@@ -71,6 +71,26 @@ node('agent-xl') {
 }
 
 // *******************************
+stage 'Upgrade Testing Start'
+// *******************************
+echo 'Starting tests that will run continuosly thru upgrade'
+node('agent-xl') {
+    
+    //Setup during upgrade test
+    osa.install_during_upgrade_tests()
+    
+    // Setup API uptime tests
+    osa.install_api_uptime_tests()
+
+    //Start During Upgrade Test
+    osa.start_during_test()
+  
+    // Start API uptime tests
+    osa.start_api_uptime_tests()
+
+}
+
+// *******************************
 stage 'Rolling Upgrade'
 // *******************************
 
@@ -79,6 +99,20 @@ node('agent-xl') {
 
     // Install latest version of Tempest in the host
     osa.rolling_upgrade(to_release)
+
+}
+
+// *******************************
+stage 'Upgrade Testing Stop'
+// *******************************
+echo 'Starting tests that will run continuosly thru upgrade'
+node('agent-xl') {
+
+    //Stop During Upgrade Test
+    osa.stop_during_test()  
+
+    // Stop API uptime tests
+    osa.stop_api_uptime_tests()  
 
 }
 

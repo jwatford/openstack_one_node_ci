@@ -139,7 +139,7 @@ def parse_results() {
 	
     sh '''
     git clone https://github.com/osic/elastic-benchmark
-    sudo pip install -e elastic-benchmark
+    sudo pip install elastic-benchmark
     elastic-upgrade -u $HOME/output/api.uptime.out -d $HOME/output/during_output.txt -p $HOME/output/persistent_resource.txt -b $HOME/subunit/smoke/before_upgrade -a $HOME/subunit/smoke/after_upgrade
     '''
 
