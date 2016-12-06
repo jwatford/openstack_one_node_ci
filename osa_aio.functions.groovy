@@ -131,7 +131,7 @@ def run_persistent_resources_tests(action = 'verify', results_file = null) {
 
 }
 
-def setup_parse_persistent_resources(){
+def setup_parse_persistent_resources() {
     
     sh '''
     git clone https://github.com/osic/persistent-resources-tests-parse.git $HOME/persistent-resources-tests-parse
@@ -140,7 +140,7 @@ def setup_parse_persistent_resources(){
 
 }
 
-def parse_persistent_resources_tests(){
+def parse_persistent_resources_tests() {
     
     sh '''
     cd $HOME/subunit/persistent_resources/
@@ -170,6 +170,35 @@ def parse_results() {
 
 }
 
+def aggregate_parse_failed_smoke(host_ip, results_file, elasticsearch_ip) {
+
+    //Pull persistent, during, api, smoke results from host to ES vm
+    sh """
+    ssh -o StrictHostKeyChecking=no ubuntu@${elasticsearch_ip} '''
+    scp -o StrictHostKeyChecking=no -r root@${host_ip}:\$HOME/output/ \$HOME
+    scp -o StrictHostKeyChecking=no -r root@${host_ip}:\$HOME/subunit/ \$HOME
+    git clone https://github.com/osic/elastic-benchmark
+    sudo pip install elastic-benchmark
+    '''
+    """
+
+	if (results_file == 'after_upgrade') {
+	    //Pull persistent, during, api, smoke results from onmetal to ES 
+	    sh """
+            ssh -o StrictHostKeyChecking=no ubuntu@${elasticsearch_ip} '''
+	    elastic-upgrade -u /home/ubuntu/output/api.uptime.out -d /home/ubuntu/output/during_output.txt -p /home/ubuntu/output/persistent_resource.txt -b /home/ubuntu/subunit/smoke/before_upgrade -a /home/ubuntu/subunit/smoke/after_upgrade
+	    ''''
+	    """
+	}
+	else {
+	    sh """
+            ssh -o StrictHostKeyChecking=no ubuntu@${elasticsearch_ip} '''
+	    elastic-upgrade -b /home/ubuntu/subunit/smoke/before_upgrade
+	    '''
+	    """
+	}
+
+}
 
 // The external code must return it's contents as an object
 return this;
