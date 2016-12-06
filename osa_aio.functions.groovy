@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def deploy_openstack(release = 'master') {i
+def deploy_openstack(release = 'master') {
 
     echo 'Deploying OpenStack All In One'
     git branch: release, url: 'https://github.com/openstack/openstack-ansible'
