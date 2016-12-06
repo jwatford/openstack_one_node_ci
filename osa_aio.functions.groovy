@@ -279,6 +279,7 @@ def install_parser() {
     rm -rf $HOME/elastic-benchmark
     git clone https://github.com/osic/elastic-benchmark $HOME/elastic-benchmark
     sudo pip install --upgrade $HOME/elastic-benchmark/
+    '''
 
 }
 
