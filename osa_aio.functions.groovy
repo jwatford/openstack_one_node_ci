@@ -273,5 +273,15 @@ def aggregate_parse_failed_smoke(host_ip, results_file, elasticsearch_ip) {
 
 }
 
+def install_parser() {
+
+    sh '''
+    rm -rf $HOME/elastic-benchmark
+    git clone https://github.com/osic/elastic-benchmark $HOME/elastic-benchmark
+    sudo pip install --upgrade $HOME/elastic-benchmark/
+
+}
+
+
 // The external code must return it's contents as an object
 return this;

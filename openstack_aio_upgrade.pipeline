@@ -143,7 +143,7 @@ stage 'Reporting'
 
 echo 'Parsing the test results and submitting them to ElasticSearch'
 node('agent-xl'){
-    
+ 
     // Pase persistent resource results
     osa.setup_parse_persistent_resources()
     osa.parse_persistent_resources_tests()
@@ -151,7 +151,10 @@ node('agent-xl'){
 }
 
 node('elasticsearch'){
-    
+  
+    // Install/upgrade the parser in ElasticSearch 
+    osa.install_parser()
+
     //Pull data from the system and places it on ES vm
     osa.aggregate_results(host_ip)
 
