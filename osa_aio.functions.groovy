@@ -242,8 +242,8 @@ def aggregate_parse_failed_smoke(host_ip, results_file, elasticsearch_ip) {
     //Pull persistent, during, api, smoke results from host to ES vm
     sh """
     ssh -o StrictHostKeyChecking=no ubuntu@${elasticsearch_ip} '''
-    scp -o StrictHostKeyChecking=no -r root@${host_ip}:\$HOME/output/ \$HOME
-    scp -o StrictHostKeyChecking=no -r root@${host_ip}:\$HOME/subunit/ \$HOME
+    scp -o StrictHostKeyChecking=no -r ubuntu@${host_ip}:\$HOME/output/ \$HOME
+    scp -o StrictHostKeyChecking=no -r ubuntu@${host_ip}:\$HOME/subunit/ \$HOME
     git clone https://github.com/osic/elastic-benchmark
     sudo pip install elastic-benchmark
     '''
