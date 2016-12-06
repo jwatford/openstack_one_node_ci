@@ -240,6 +240,7 @@ def parse_results() {
 	
     sh '''
     elastic-upgrade -u $HOME/output/api.uptime.out -d $HOME/output/during_output.txt -p $HOME/output/persistent_resource.txt -b $HOME/subunit/smoke/before_upgrade -a $HOME/subunit/smoke/after_upgrade
+    elastic-upgrade -s nova_status.json,swift_status.json,keystone_status.json
     '''
 
 }
