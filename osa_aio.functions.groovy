@@ -58,7 +58,7 @@ def configure_tempest() {
 
 }
 
-def run_tempest_smoke_tests(results_file = 'results') {
+def run_tempest_smoke_tests(results_file = 'results', elasticsearch_ip) {
 
     String newline = "\n"
     def tempest_output, failures
