@@ -1,6 +1,7 @@
 #!/usr/bin/env groovy
 
 def osa, common
+String workspace_dir
 String host_ip, elasticsearch_ip, elasticsearch_pkey
 
 // Jenkins must provide these variables as parameters or the build 
@@ -38,6 +39,10 @@ node('agent-xl') {
     // Wait for cloud-init to finish
     common.wait_for_agent_setup()
 
+    // Get the workspace directory in the agent
+    workspace_dir = pwd()
+    echo "The workspace directory is ${workspace_dir}"
+
     // Get the agent IP
     host_ip = common.get_server_ip()
 
@@ -45,7 +50,10 @@ node('agent-xl') {
     common.add_key_to_server(elasticsearch_pkey)
 
     // Deploy OpenStack
-    osa.deploy_openstack_aio(from_release)
+    osa.deploy_openstack(from_release)
+
+    // Install latest version of Tempest in the host
+    osa.configure_tempest()
 
 }
 
@@ -57,11 +65,8 @@ stage 'Post-Deployment Validation'
 echo 'Running tests to validate the OpenStack deployment'
 node('agent-xl') {
    
-    // Install latest version of Tempest in the host
-    osa.install_tempest()
-
     // Run the smoke tests
-    osa.run_tempest_smoke_tests('before_upgrade')
+    osa.run_tempest_smoke_testt('before_upgrade', elasticsearch_ip)
 
     // Install and run the persistent resources creation
     osa.install_persistent_resources_tests()
@@ -91,7 +96,7 @@ node('agent-xl') {
 }
 
 // *******************************
-stage 'Rolling Upgrade'
+stage 'Upgrade'
 // *******************************
 
 echo "Upgrading OpenStack from ${from_release} to ${to_release}"
@@ -124,7 +129,7 @@ echo 'Validating the OpenStack deployment after the upgrade'
 node('agent-xl') {
  
     // Run the tempest tests
-    osa.run_tempest_smoke_tests('after_upgrade')
+    osa.run_tempest_smoke_tests('after_upgrade', elasticsearch_ip)
 
     // Run the persistent resources validation then clean them up
     osa.run_persistent_resources_tests('verify', 'after_upgrade')
@@ -153,4 +158,18 @@ node('elasticsearch'){
     //Push data to ES
     osa.parse_results()
     
+}
+
+// *******************************
+stage 'Clean Up'
+// *******************************
+
+echo 'Deleting the OpenStack host'
+node('agent-xl') {
+
+    // There is actually nothing to be done here since Jenkins will take
+    // care of deleting the VM. This stage is left in the pipeline just
+    // for reference.
+    println "The host ${host_ip} will be deleted by Jenkins in 5 minutes."
+
 }
