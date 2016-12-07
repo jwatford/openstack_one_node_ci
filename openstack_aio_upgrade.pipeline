@@ -2,7 +2,7 @@
 
 def osa, common
 String workspace_dir
-String host_ip, elasticsearch_ip, elasticsearch_pkey
+String host_ip, elasticsearch_ip, elasticsearch_pkey, host_pkey
 
 // Jenkins must provide these variables as parameters or the build 
 // will fail:
@@ -43,8 +43,9 @@ node('agent-xl') {
     workspace_dir = pwd()
     echo "The workspace directory is ${workspace_dir}"
 
-    // Get the agent IP
+    // Get the agent IP and public key
     host_ip = common.get_server_ip()
+    host_pkey = common.get_server_public_key()
 
     // Add the elasticsearch public key to the deployed onmetal host
     common.add_key_to_server(elasticsearch_pkey)
@@ -54,6 +55,13 @@ node('agent-xl') {
 
     // Install latest version of Tempest in the host
     osa.configure_tempest()
+
+}
+
+node('elasticsearch') {
+
+    // Add the elasticsearch public key to the deployed onmetal host
+    common.add_key_to_server(host_pkey)
 
 }
 
