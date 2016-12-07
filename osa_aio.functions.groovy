@@ -58,7 +58,7 @@ def configure_tempest() {
 
 }
 
-def run_tempest_smoke_tests(results_file = 'results', elasticsearch_ip = null) {
+def run_tempest_smoke_tests(results_file = 'results', elasticsearch_ip = null, host_ip = null) {
 
     String newline = "\n"
     def tempest_output, failures
@@ -80,7 +80,7 @@ def run_tempest_smoke_tests(results_file = 'results', elasticsearch_ip = null) {
         failures = failures.substring(0,failures.indexOf(newline)).toInteger()
         if (failures > 1) {
 	    println 'Parsing failed smoke'
-            if (elasticsearch_ip != null) {
+            if (elasticsearch_ip != null && host_ip != null ) {
 	        aggregate_parse_failed_smoke(host_ip, results_file, elasticsearch_ip)
             }
             error "${failures} tests from the Tempest smoke tests failed, stopping the pipeline."
