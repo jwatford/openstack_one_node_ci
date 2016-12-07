@@ -259,14 +259,14 @@ def aggregate_parse_failed_smoke(host_ip, results_file, elasticsearch_ip) {
 	    //Pull persistent, during, api, smoke results from onmetal to ES 
 	    sh """
             ssh -o StrictHostKeyChecking=no ubuntu@${elasticsearch_ip} '''
-	    elastic-upgrade -u /home/ubuntu/output/api.uptime.out -d /home/ubuntu/output/during_output.txt -p /home/ubuntu/output/persistent_resource.txt -b /home/ubuntu/subunit/smoke/before_upgrade -a /home/ubuntu/subunit/smoke/after_upgrade
+	    elastic-upgrade -u \$HOME/output/api.uptime.out -d \$HOME/output/during_output.txt -p \$HOME/output/persistent_resource.txt -b \$HOME/subunit/smoke/before_upgrade -a \$HOME/subunit/smoke/after_upgrade
 	    ''''
 	    """
 	}
 	else {
 	    sh """
             ssh -o StrictHostKeyChecking=no ubuntu@${elasticsearch_ip} '''
-	    elastic-upgrade -b /home/ubuntu/subunit/smoke/before_upgrade
+	    elastic-upgrade -b \$HOME/subunit/smoke/before_upgrade
 	    '''
 	    """
 	}
