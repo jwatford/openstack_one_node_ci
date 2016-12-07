@@ -220,7 +220,6 @@ def parse_persistent_resources_tests() {
 def aggregate_results(host_ip) {
 
     //Pull persistent, during, api, smoke results from onmetal to ES vm
-    host_ip = "${host_ip}".trim()
     sh """
     {
         scp -o StrictHostKeyChecking=no -r ubuntu@${host_ip}:\$HOME/output/ \$HOME
