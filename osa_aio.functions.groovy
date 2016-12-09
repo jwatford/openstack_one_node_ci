@@ -129,6 +129,7 @@ def run_persistent_resources_tests(action = 'verify', results_file = null) {
     cd \$HOME/tempest/
     stream_id=`cat .testrepository/next-stream`
     sudo ostestr --regex persistent-${action}
+    sudo chown -R ubuntu:ubuntu .testrepository 
     mkdir -p \$HOME/subunit/persistent_resources/
     cp .testrepository/\$stream_id \$HOME/subunit/persistent_resources/${results_file}
     """
