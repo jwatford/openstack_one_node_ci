@@ -112,7 +112,7 @@ def install_persistent_resources_tests() {
     sh '''
     rm -rf $HOME/persistent-resources-tests
     git clone https://github.com/osic/persistent-resources-tests.git $HOME/persistent-resources-tests
-    sudo pip --upgrade install $HOME/persistent-resources-tests/
+    sudo pip install --upgrade $HOME/persistent-resources-tests/
     '''
 
 }
