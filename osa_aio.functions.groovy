@@ -203,8 +203,9 @@ def stop_api_uptime_tests() {
 def setup_parse_persistent_resources() {
     
     sh '''
+    rm -rf $HOME/persistent-resources-tests-parse
     git clone https://github.com/osic/persistent-resources-tests-parse.git $HOME/persistent-resources-tests-parse
-    sudo pip install $HOME/persistent-resources-tests-parse/
+    sudo pip install --upgrade $HOME/persistent-resources-tests-parse/
     '''
 
 }
