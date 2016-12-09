@@ -2,7 +2,7 @@
 
 def osa, common
 String workspace_dir
-String host_ip, elasticsearch_ip, elasticsearch_pkey, host_pkey
+String host_ip, elasticsearch_ip
 
 // Jenkins must provide these variables as parameters or the build 
 // will fail:
@@ -30,7 +30,6 @@ node('elasticsearch') {
 
     // Get the server information
     elasticsearch_ip = common.get_server_ip()
-    elasticsearch_pkey = common.get_server_public_key()
 
 }
 
@@ -43,12 +42,8 @@ node('agent-xl') {
     workspace_dir = pwd()
     echo "The workspace directory is ${workspace_dir}"
 
-    // Get the agent IP and public key
+    // Get the agent IP
     host_ip = common.get_server_ip()
-    host_pkey = common.get_server_public_key()
-
-    // Add the elasticsearch public key to the deployed onmetal host
-    common.add_key_to_server(elasticsearch_pkey)
 
     // Deploy OpenStack
     osa.deploy_openstack(from_release)
@@ -57,14 +52,6 @@ node('agent-xl') {
     osa.configure_tempest()
 
 }
-
-node('elasticsearch') {
-
-    // Add the elasticsearch public key to the deployed onmetal host
-    common.add_key_to_server(host_pkey)
-
-}
-
 
 // *******************************
 stage 'Post-Deployment Validation'
