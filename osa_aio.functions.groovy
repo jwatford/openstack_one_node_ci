@@ -296,6 +296,17 @@ def install_parser() {
 
 }
 
+def cleanup_test_results() {
+
+    println "Removing previous test results files..."
+    sh '''
+    find $HOME/subunit ! -name '.*' ! -type d -exec rm -- {} + || echo "No subunit directory found."
+    find $HOME/output ! -name '.*' ! -type d -exec rm -- {} + || echo "No output directory found."
+    '''
+    println "The environment is clean from previous test results."
+
+}
+
 
 // The external code must return it's contents as an object
 return this;

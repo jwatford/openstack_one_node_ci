@@ -42,6 +42,9 @@ node('agent-xl') {
     workspace_dir = pwd()
     echo "The workspace directory is ${workspace_dir}"
 
+    // Cleanup tests results directories if they exist to avoid causing false results
+    osa.cleanup_test_results()
+
     // Get the agent IP
     host_ip = common.get_server_ip()
 
