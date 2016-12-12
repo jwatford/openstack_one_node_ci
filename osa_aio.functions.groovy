@@ -142,7 +142,7 @@ def install_during_upgrade_tests() {
     sh '''
     mkdir -p $HOME/output
     git clone https://github.com/osic/rolling-upgrades-during-test
-    cd rolling-upgrades-during-test
+    cd $HOME/rolling-upgrades-during-test
     pip install -r requirements.txt
     '''
 
@@ -173,9 +173,10 @@ def install_api_uptime_tests() {
     // setup api uptime tests
     sh '''
     mkdir -p $HOME/output
-    git clone https://github.com/osic/api_uptime.git
-    cd api_uptime
-    pip install -r requirements.txt
+    rm -rf $HOME/api_uptime
+    git clone https://github.com/osic/api_uptime.git $HOME/api_uptime
+    cd $HOME/api_uptime
+    sudo pip install --upgrade -r requirements.txt
     '''
 
 }
@@ -184,10 +185,9 @@ def start_api_uptime_tests() {
 
     sh '''
     sudo rm -f /usr/api.uptime.stop
-    cd api_uptime/api_uptime
-    python call_test.py -v -d -s nova,swift -o $HOME/output/api.uptime.out
+    cd $HOME/api_uptime/api_uptime
+    python call_test.py -v -d -s nova,swift -o $HOME/output/api.uptime.out &
     ''' 
-    //&
 
 }
 
