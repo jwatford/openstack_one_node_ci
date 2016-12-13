@@ -141,9 +141,9 @@ def install_during_upgrade_tests() {
      // Setup during tests
     sh '''
     mkdir -p $HOME/output
-    git clone https://github.com/osic/rolling-upgrades-during-test
+    git clone https://github.com/osic/rolling-upgrades-during-test $HOME/rolling-upgrades-during-test
     cd $HOME/rolling-upgrades-during-test
-    pip install -r requirements.txt
+    pip install --upgrade -r requirements.txt
     '''
 
 }
@@ -152,10 +152,9 @@ def start_during_test() {
 
     // Run during test
     sh '''
-    cd rolling-upgrades-during-test
-    python call_test.py -d
+    cd $HOME/rolling-upgrades-during-test
+    python call_test.py -d &
     ''' 
-    //&
 
 }
 
