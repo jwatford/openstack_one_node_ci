@@ -141,6 +141,7 @@ def install_during_upgrade_tests() {
      // Setup during tests
     sh '''
     mkdir -p $HOME/output
+    rm -rf $HOME/rolling-upgrades-during-test
     git clone https://github.com/osic/rolling-upgrades-during-test $HOME/rolling-upgrades-during-test
     cd $HOME/rolling-upgrades-during-test
     sudo pip install --upgrade -r requirements.txt
