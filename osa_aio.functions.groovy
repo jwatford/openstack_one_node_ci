@@ -163,6 +163,14 @@ def stop_during_test() {
     sh '''
     sudo touch /usr/during.uptime.stop
     '''
+    // Wait up to 10 seconds for the results file gets created by the script
+    sh '''
+    x=0
+    while [ "$x" -lt 100 -a ! -e $HOME/output/during.uptime.out ]; do
+        x=$((x+1))
+        sleep .1
+    done
+    '''
 
 }
 
