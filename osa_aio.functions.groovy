@@ -126,7 +126,7 @@ def prime_rally_benchmarks() {
     """
 }
 
-def run_rally_benchmarks() {
+def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host_ip = null) {
     sh """
     cd
     . /home/ubuntu/rally/bin/activate
@@ -137,7 +137,7 @@ def run_rally_benchmarks() {
     cd
     cd rally/rally-scenarios/
     rally task start benchmark.json --task-args-file args.yaml
-    rally task results > ~/rally/results.json
+    rally task results > ~/rally/${results_file}.json
     deactivate
     """
 }
