@@ -96,6 +96,52 @@ def run_tempest_smoke_tests(results_file = 'results', elasticsearch_ip = null, h
 
 }
 
+def install_rally() {
+    sh """	
+    cd
+    sudo rm -R rally/
+    sudo wget -q -O- https://raw.githubusercontent.com/openstack/rally/master/install_rally.sh | bash
+    cd
+    cd rally/
+    sudo git clone https://github.com/jwatford/rally-scenarios.git
+    cd
+    . /home/ubuntu/rally/bin/activate
+    source openrc
+    rally-manage db recreate
+    """	
+}
+
+def prime_rally_benchmarks() {
+    sh """
+    cd
+    . /home/ubuntu/rally/bin/activate
+    source openrc
+    rally-manage db recreate
+    rally deployment create --fromenv --name=existing
+    rally deployment use --deployment existing
+    cd
+    cd rally/rally-scenarios/
+    rally task start osic-keystone-prime-scenario.json --task-args-file args.yaml
+    rally task start osic-nova-1-server-scenario.json --task-args-file args.yaml
+    """
+}
+
+def run_rally_benchmarks() {
+    sh """
+    cd
+    . /home/ubuntu/rally/bin/activate
+    source openrc
+    rally-manage db recreate
+    rally deployment create --fromenv --name=existing
+    rally deployment use --deployment existing
+    cd
+    cd rally/rally-scenarios/
+    rally task start benchmark.json --task-args-file args.yaml
+    rally task results > ~/rally/results.json
+    deactivate
+    """
+}
+
 def rolling_upgrade(to_release = 'master') {
 
     git 'https://github.com/osic/qa-jenkins-onmetal.git'
