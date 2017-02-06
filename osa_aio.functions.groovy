@@ -99,7 +99,6 @@ def run_tempest_smoke_tests(results_file = 'results', elasticsearch_ip = null, h
 def install_rally() {
     sh """	
     cd
-    sudo rm -R rally/
     sudo wget -q -O- https://raw.githubusercontent.com/openstack/rally/master/install_rally.sh | bash
     cd
     cd rally/
