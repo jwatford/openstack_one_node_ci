@@ -144,8 +144,6 @@ def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host
     deactivate
     cd
     cd rally/output
-    cat before_upgrade.json | elastic-benchmark -e osa
-    cat after_upgrade.json | elastic-benchmark -e osa
     """
 }
 
