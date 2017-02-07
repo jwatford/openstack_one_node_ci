@@ -142,6 +142,10 @@ def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host
     rally task report --html-static --out ~/rally/output/${results_file}.html
     rally task results > ~/rally/output/${results_file}.json
     deactivate
+    cd
+    cd rally/output
+    cat before_upgrade.json | elastic-benchmark -e osa
+    cat after_upgrade.json | elastic-benchmark -e osa
     """
 }
 
