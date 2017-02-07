@@ -138,6 +138,8 @@ def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host
     cd
     cd rally/rally-scenarios/
     rally task start benchmark.json --task-args-file args.yaml
+    rally task report --junit --out ~/rally/output/${results_file}..xml
+    rally task report --html-static --out ~/rally/output/${results_file}.html
     rally task results > ~/rally/output/${results_file}.json
     deactivate
     """
