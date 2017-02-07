@@ -135,9 +135,11 @@ def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host
     rally deployment create --fromenv --name=existing
     rally deployment use --deployment existing
     cd
+    cd rally/
+    mkdir output
     cd rally/rally-scenarios/
     rally task start benchmark.json --task-args-file args.yaml
-    rally task results > ~/rally/${results_file}.json
+    rally task results > ~/rally/output/${results_file}.json
     deactivate
     """
 }
