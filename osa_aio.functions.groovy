@@ -103,6 +103,7 @@ def install_rally() {
     sudo wget -q -O- https://raw.githubusercontent.com/openstack/rally/master/install_rally.sh | bash
     cd
     cd rally/
+    mkdir output
     sudo git clone https://github.com/jwatford/rally-scenarios.git
     cd
     . /home/ubuntu/rally/bin/activate
