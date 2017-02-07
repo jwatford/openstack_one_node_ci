@@ -149,13 +149,13 @@ def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host
 
 def parse_benchmarks(results_file = 'results', elasticsearch_ip = null, host_ip = null) {
 
-	sh """
 	def results = ~/rally/output/${results_file}.json;
 	File elastic_search = new File(results);
-	if (elastic_search.exists() && !elastic_search.isDirectory()) {
-		cat ${results_file}.json | elastic-benchmark -e osa-${results_file}
+	sh """
+	if (elastic_search.exists() && !elastic_search.isDirectory()) {	
+	      cat ${results_file}.json | elastic-benchmark -e osa-${results_file}
 	}
-	"""
+        """
 }
 
 def rolling_upgrade(to_release = 'master') {
