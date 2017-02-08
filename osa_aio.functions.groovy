@@ -122,7 +122,7 @@ def prime_rally_benchmarks() {
 
 def run_rally_benchmarks(results_file = 'results') {
     sh """
-    cd
+    cd /home/ubuntu
     . /home/ubuntu/rally/bin/activate
     source openrc
     rally deployment use --deployment existing
