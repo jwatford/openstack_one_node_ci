@@ -147,6 +147,7 @@ def parse_benchmarks(results_file = 'results', elasticsearch_ip = null, host_ip 
 
 	sh """
 	   cd
+	   cd output/
            cat ${results_file}.json | elastic-benchmark -e osa-${results_file};fi
         """
 }
