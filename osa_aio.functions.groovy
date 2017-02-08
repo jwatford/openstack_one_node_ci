@@ -103,16 +103,15 @@ def install_rally() {
     sudo wget -q -O- https://raw.githubusercontent.com/openstack/rally/master/install_rally.sh | bash
     cd rally/
     sudo git clone https://github.com/jwatford/rally-scenarios.git
-    cd
-    . /home/ubuntu/rally/bin/activate
-    source openrc
-    rally-manage db recreate
     """	
 }
 
 def prime_rally_benchmarks() {
     sh """
     cd
+    . /home/ubuntu/rally/bin/activate
+    source openrc
+    rally-manage db recreate
     rally deployment create --fromenv --name=existing
     rally deployment use --deployment existing
     cd
@@ -125,6 +124,8 @@ def prime_rally_benchmarks() {
 def run_rally_benchmarks(results_file = 'results') {
     sh """
     cd
+    . /home/ubuntu/rally/bin/activate
+    source openrc
     rally deployment use --deployment existing
     cd rally/rally-scenarios/
     rally task start benchmark.json --task-args-file args.yaml
