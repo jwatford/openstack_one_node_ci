@@ -108,14 +108,13 @@ def install_rally() {
 
 def prime_rally_benchmarks() {
     sh """
-    cd
+    cd /home/ubuntu/
     . /home/ubuntu/rally/bin/activate
     source openrc
     rally-manage db recreate
     rally deployment create --fromenv --name=existing
     rally deployment use --deployment existing
-    cd
-    cd rally/rally-scenarios/
+    cd /home/ubuntu/rally/rally-scenarios/
     rally task start osic-keystone-prime-scenario.json --task-args-file args.yaml
     rally task start osic-nova-1-server-scenario.json --task-args-file args.yaml
     """
@@ -139,8 +138,7 @@ def run_rally_benchmarks(results_file = 'results') {
 def parse_benchmarks(results_file = 'results') {
 
 	sh """
-	   cd
-	   cd output/
+	   cd /home/ubuntu/output/
            cat ${results_file}.json | elastic-benchmark -e osa-${results_file};fi
         """
 }
