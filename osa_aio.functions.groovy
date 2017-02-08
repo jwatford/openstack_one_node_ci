@@ -138,7 +138,7 @@ def run_rally_benchmarks(results_file = 'results') {
 def parse_benchmarks(results_file = 'results') {
 
 	sh """
-           cat \$HOME/output/ ${results_file}.json | elastic-benchmark -e osa-${results_file};fi
+           cat /home/ubuntu/output/ ${results_file}.json | elastic-benchmark -e osa-${results_file};fi
         """
 }
 
