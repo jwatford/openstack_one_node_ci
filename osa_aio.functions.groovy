@@ -150,8 +150,7 @@ def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host
 def parse_benchmarks(results_file = 'results', elasticsearch_ip = null, host_ip = null) {
 
 	sh """	
-	      file="~/rally/output/${results_file}.json"
-              if [ -f "$file" ]
+              if [ -f "${results_file}.json" ]
 	      then
                 cat ${results_file}.json | elastic-benchmark -e osa-${results_file}
               fi
