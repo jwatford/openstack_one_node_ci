@@ -122,7 +122,7 @@ def prime_rally_benchmarks() {
     """
 }
 
-def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host_ip = null) {
+def run_rally_benchmarks(results_file = 'results') {
     sh """
     cd
     rally deployment use --deployment existing
@@ -135,7 +135,7 @@ def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host
     """
 }
 
-def parse_benchmarks(results_file = 'results', elasticsearch_ip = null, host_ip = null) {
+def parse_benchmarks(results_file = 'results') {
 
 	sh """
 	   cd
