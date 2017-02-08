@@ -102,8 +102,6 @@ def install_rally() {
     sudo rm -R rally/
     sudo wget -q -O- https://raw.githubusercontent.com/openstack/rally/master/install_rally.sh | bash
     cd
-    cd rally/
-    mkdir output
     sudo git clone https://github.com/jwatford/rally-scenarios.git
     cd
     . /home/ubuntu/rally/bin/activate
@@ -139,18 +137,17 @@ def run_rally_benchmarks(results_file = 'results', elasticsearch_ip = null, host
     cd rally/rally-scenarios/
     rally task start benchmark.json --task-args-file args.yaml
     rally task report --junit --out ~/rally/output/${results_file}..xml
-    rally task report --html-static --out ~/rally/output/${results_file}.html
-    rally task results > ~/rally/output/${results_file}.json
+    rally task report --html-static --out ~/output/${results_file}.html
+    rally task results > ~/output/${results_file}.json
     deactivate
-    cd
-    cd rally/output
     """
 }
 
 def parse_benchmarks(results_file = 'results', elasticsearch_ip = null, host_ip = null) {
 
-	sh """	
-           if test -f "${results_file}.json"; then cat ${results_file}.json | elastic-benchmark -e osa-${results_file};fi
+	sh """
+	   cd
+           cat ${results_file}.json | elastic-benchmark -e osa-${results_file};fi
         """
 }
 
