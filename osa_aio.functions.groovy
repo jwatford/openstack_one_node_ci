@@ -127,7 +127,7 @@ def run_rally_benchmarks(results_file = 'results') {
     source openrc
     rally deployment use --deployment existing
     cd rally/rally-scenarios/
-    rally task start benchmarks.json --task-args-file args.yaml
+    rally task start benchmark.json --task-args-file args.yaml
     rally task report --junit --out ~/output/${results_file}..xml
     rally task report --html-static --out ~/output/${results_file}.html
     rally task results > ~/output/${results_file}.json
