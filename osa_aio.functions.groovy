@@ -100,6 +100,7 @@ def install_rally() {
     sh """	
     cd
     sudo rm -R rally/
+    sudo pip install -r requirements.txt
     sudo wget -q -O- https://raw.githubusercontent.com/openstack/rally/master/install_rally.sh | bash
     cd rally/
     sudo git clone https://github.com/jwatford/rally-scenarios.git
