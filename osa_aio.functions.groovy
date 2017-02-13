@@ -20,7 +20,7 @@ def configure_tempest() {
     echo 'Installing and configuring Tempest'
     // Install latest version of Tempest in the host
     sh '''
-    git clone https://github.com/openstack/tempest.git $HOME/tempest
+    sudo git clone https://github.com/openstack/tempest.git $HOME/tempest
     sudo pip install $HOME/tempest/
     '''
 
