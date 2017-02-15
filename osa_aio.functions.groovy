@@ -300,7 +300,7 @@ def aggregate_results(host_ip) {
         echo 'No output directory found.'
     }
     {
-        scp -o StrictHostKeyChecking=no -r ubuntu@${host_ip}:\$HOME/subunit/ \$HOME
+        scp -o StrictHostKeyChecking=no -r ubuntu@${host_ip}:\$HOME/subunit_test_folder/ \$HOME
     } || {
         echo 'No subunit directory found.'
     }
@@ -313,7 +313,7 @@ def parse_results() {
     sh '''
     elastic-upgrade -u $HOME/output/api.uptime.out -d $HOME/output/during.uptime.out -p $HOME/output/persistent_resource.txt -b $HOME/subunit/smoke/before_upgrade -a $HOME/subunit/smoke/after_upgrade
     elastic-upgrade -s $HOME/output/nova_status.json,$HOME/output/swift_status.json,$HOME/output/keystone_status.json
-    rm -rf $HOME/output $HOME/subunit
+    rm -rf $HOME/output $HOME/subunit_test_folder
     '''
 
 }
