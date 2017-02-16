@@ -140,6 +140,8 @@ def run_rally_benchmarks(results_file = 'results') {
     rally task report --junit --out ~/output/${results_file}.xml
     rally task report --html-static --out ~/output/${results_file}.html
     rally task results > ~/output/${results_file}.json
+    rally task results > ~/output/${results_file}.html
+    rally task results > ~/output/${results_file}.xml
     deactivate
     """
 }
